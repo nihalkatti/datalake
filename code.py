@@ -16,6 +16,17 @@ config.read('dl.cfg')
 os.environ['AWS_ACCESS_KEY_ID']=config['AWS_ACCESS_KEY_ID']
 os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS_SECRET_ACCESS_KEY']
 
+def main():
+   create_spark_session()
+    input_data = "s3a://udacity-dend/"
+    output_data = "s3://nil1234-datalake/"
+    
+    process_song_data(spark, input_data, output_data)    
+    process_log_data(spark, input_data, output_data)
+
+
+if __name__ == "__main__":
+    main()
 
 def create_spark_session():
     """
@@ -190,22 +201,4 @@ def process_log_data(spark, input_data, output_data):
     songplays_table.write.partitionBy('year', 'month').parquet(songplays_path)
 
 
-def main():
-    """
-    Description: Calls functions to create spark session, read from S3
-                 and perform ETL to S3 Data Lake.
-
-    Returns:
-        None
-    """
-    spark = create_spark_session()
-    input_data = "s3a://udacity-dend/"
-    output_data = "s3://alanchn31-datalake/"
-    
-    process_song_data(spark, input_data, output_data)    
-    process_log_data(spark, input_data, output_data)
-
-
-if __name__ == "__main__":
-    main()
 
